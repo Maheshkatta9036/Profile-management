@@ -1,4 +1,4 @@
-from logger import *
+from ..logs.logger import *
 from validate_product_utils import *
 from constants import PRODUCT_DETAILS
 

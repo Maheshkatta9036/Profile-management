@@ -1,4 +1,4 @@
-from logger import *
+from ..logs.logger import *
 from constants import USERS, ADMINS, LOG_SWITCH
 from user_manager_utils import *
 

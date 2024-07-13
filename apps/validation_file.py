@@ -1,8 +1,8 @@
 """This is the main file for posting data"""
 
-from logger import *
+from ..logs.logger import *
 from constants import DATA
-from validate_utils import *
+from ..utils.validate_utils import *
 
 class PostUserData():
     '''

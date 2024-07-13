@@ -1,4 +1,4 @@
-from logger import *
+from ..logs.logger import *
 import re
 
 
