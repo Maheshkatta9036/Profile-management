@@ -1,6 +1,6 @@
-from ..logs.logger import *
+from logger import *
 import re
-
+from constants import *
 
 def authenticate_user(name, users, admins):
     '''
@@ -13,6 +13,53 @@ def authenticate_user(name, users, admins):
         logging.debug(f"User Authenticated succesfully")
         return True
     return False
+
+
+def is_valid_record(record):
+    """
+    This function  a new record for inserting in to DATA
+    param: record: dict
+    return: bool
+    """
+
+    if is_valid_name(record["name"]):
+        if is_valid_dob(record["dob"], record["name"]):
+            if is_valid_gender(record["gender"], record["name"]):
+                if is_valid_password(record["password"]):
+                    return True
+
+
+def is_valid_gender(gender, name):
+    """
+    This function is for validate the gender
+    :param gender: str    :param name: str
+    :return: bool
+    """
+    if gender in VALID_GENDER:
+        return True
+    else:
+        logging.error(f'User={name} has invalid gender = {gender}')
+        raise Exception(f'Error:-User={name} has invalid gender = {gender}')
+
+
+def is_valid_password(password):
+    if len(password) < 6:
+        logging.error(f"Length of password should not be less than 6")
+        raise Exception(f"Length of password should not be less than 6")
+
+    patterns = {
+        "uppercase": r'[A-Z]',
+        "lowercase": r'[a-z]',
+        "digit": r'\d',
+        "special": r'\W'
+    }
+
+    for name, pattern in patterns.items():
+        if not re.search(pattern, password):
+            logging.error(f"Password {password} doesn't contain {name} character")
+            raise Exception(f"Password {password} doesn't contain {name} character")
+
+    return True
 
 
 def is_valid_user_name(user_name, users, admins):
@@ -73,6 +120,23 @@ def is_valid_dob(dob):
     if not re.match(r"\d{1,2}-\d{1,2}-\d{4}", dob):
         raise ValueError("DOB must be in the format DD-MM-YYYY")
     return True    
+
+
+def create_user_info(role):
+    global admin
+    user = input(f"Enter username:")
+    name = input(f"Enter Name:")
+    initial = input(f"Enter first character of surname:")
+    dept = input(f"Enter the department:")
+    dob = input(f"Enter the DOB:")
+    gender = input(f"Enter the gender:")
+    password = input(f'Enter the password that contains one Upper,lower,digit,special char = ')
+    if role == "normal":
+        admin = False
+    elif role == "admin":
+        admin = True
+    return {"username": user, "name": name + "." + initial, "dept": dept, "dob": dob, "gender": gender,
+            "password": password, "isadmin": admin}
 
 
 
